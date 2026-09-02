@@ -117,8 +117,8 @@ describe "Tests de remisería ChasquiCoop" {
 
     const unq = new Reserva( cantPersonasALlevar = 4, distanciaARecorrer = 30, tiempoMáxViaje = 4, coloresContraindicados = #{"rojo"}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
 
-    assert.equals( #{ combiAdaptable, academia } , villaElisa.cumpleCon(unq) ) // reyDeCopas queda descartado por ser de color rojo
-
+    assert.equals( #{ combiAdaptable, academia } , villaElisa.cumpleCon(unq) ) //  queda descartado por ser de color rojo
+reyDeCopas
     assert.throwsException( { villaElisa.registrarViaje( unq, reyDeCopas ) } ) // falla porque no respeta la reserva  - tiene color contraindicado
 
     assert.throwsException( { villaElisa.registrarViaje( unq, xeneixe ) } ) // falla porque no es parte de la flota de villaElisa
