@@ -1,0 +1,58 @@
+import vehiculos.*
+
+describe "Tests de Remisería ChasquiCoop" {
+  const reyDeCopas = new Torino( color = "rojo", velocidadMáx = 120, autonomía = 300 )
+  const academia = new Torino(  color = "celeste", velocidadMáx = 110, autonomía = 250  )
+  const cuervo = new Económico( adaptaciones = #{ tanqueExtraDeGas, trasportadorDeSillaRuedas } )
+  const xeneixe = new Económico( adaptaciones = #{ cañoDeEscapeSilencioso } )
+  const millonario = new Económico( adaptaciones = #{} )
+
+  test "Torino: rey de copas" {
+    assert.equals( "rojo", reyDeCopas.color() )
+    assert.equals( 300, reyDeCopas.autonomía() )
+    assert.equals( 120, reyDeCopas.velocidadMáx() )
+    assert.equals( 4, reyDeCopas.capacidad() )
+    assert.notThat( reyDeCopas.puedeTransportarSillasDeRuedas() )
+    assert.that( reyDeCopas.esRuidoso() )
+  }
+
+  test "Torino: academia" {
+    assert.equals( "celeste", academia.color() )
+    assert.equals( 250, academia.autonomía() )
+    assert.equals( 110, academia.velocidadMáx() )
+    assert.equals( 4, academia.capacidad() )
+    assert.notThat( academia.puedeTransportarSillasDeRuedas() )
+    assert.that( academia.esRuidoso() )
+  }
+
+  test "Económico: cuervo" {
+    assert.equals( "beige", cuervo.color() )
+    assert.equals( 380, cuervo.autonomía() )
+    assert.equals( 80, cuervo.velocidadMáx() )
+    assert.equals( 3, cuervo.capacidad() )
+    assert.that( cuervo.puedeTransportarSillasDeRuedas() )
+    assert.notThat( cuervo.esRuidoso() )
+  }
+
+  test "Económico: xeneixe" {
+    assert.equals( "beige", xeneixe.color() )
+    assert.equals( 190, xeneixe.autonomía() )
+    assert.equals( 115, xeneixe.velocidadMáx() )
+    assert.equals( 5, xeneixe.capacidad() )
+    assert.notThat( xeneixe.puedeTransportarSillasDeRuedas() )
+    assert.notThat( xeneixe.esRuidoso() )
+  }
+
+  test "Económico: millonario" {
+    assert.equals( "beige", millonario.color() )
+    assert.equals( 200, millonario.autonomía() )
+    assert.equals( 120, millonario.velocidadMáx() )
+    assert.equals( 5, millonario.capacidad() )
+    assert.notThat( millonario.puedeTransportarSillasDeRuedas() )
+    assert.that( millonario.esRuidoso() )
+  }
+
+  test "combi: motor deportivo e interior espacioso" {
+    
+  }
+}

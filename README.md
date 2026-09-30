@@ -34,11 +34,11 @@ Por lo tanto, la velocidad máxima de un vehículo económico es el número meno
 
 Un vehículo base de estos no puede llevar una silla de ruedas. Solo puede llevarlo si contiene alguna adaptación que lo permita. La única es el *transportador de sillas de rueda*. Ni el tanque extra ni el caño de escape silencioso influye.
 
-Con respecto al ruido del motor, es similar: Sin ninguna adpatación es ruidoso. Si posee alguna adaptación que permita reducir el ruido del motor, entonces será silencioso. Tanto el caño de escape silencoso como el tanque de gas extra funcionan como silenciadores del motor. El transportador de sillas de rueda no influye para disminuir el ruido.
+Con respecto al ruido del motor, es similar: Sin ninguna adaptación es ruidoso. Si posee alguna adaptación que permita reducir el ruido del motor, entonces será silencioso. Tanto el caño de escape silencoso como el tanque de gas extra funcionan como silenciadores del motor. El transportador de sillas de rueda no influye para disminuir el ruido.
 
 El color del vehículo económico es siempre **beige**.
 
-Un vehículo económico sin ninguna adapactión tiene 200 km de autonomía. El caño de espape silenciado le quita 10 km de autonomía. El tanque adicional de gas aporta 200 km de autonómía extra. El transportador de silla de rueda le quita 20 km de autonomía.
+Un vehículo económico sin ninguna adaptación tiene 200 km de autonomía. El caño de escape silenciado le quita 10 km de autonomía. El tanque adicional de gas aporta 200 km de autonómía extra. El transportador de silla de rueda le quita 20 km de autonomía.
 
 * **La combi adaptable**: un vehículo de color **celeste** reconfigurable, porque se le puede cambiar el interior y el motor. 
 
