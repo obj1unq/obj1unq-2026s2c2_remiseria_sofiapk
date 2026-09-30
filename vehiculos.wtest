@@ -53,6 +53,13 @@ describe "Tests de Remisería ChasquiCoop" {
   }
 
   test "combi: motor deportivo e interior espacioso" {
-    
+    combiAdaptable.interior(interiorEspacioso)
+    combiAdaptable.motor(motorDeportivo)
+    assert.equals( "celeste", combiAdaptable.color() )
+    assert.equals( 400, combiAdaptable.autonomía() )
+    assert.equals( 230, combiAdaptable.velocidadMáx() )
+    assert.equals( 7, combiAdaptable.capacidad() )
+    assert.notThat( combiAdaptable.puedeTransportarSillasDeRuedas() )
+    assert.that( combiAdaptable.esRuidoso() )
   }
 }

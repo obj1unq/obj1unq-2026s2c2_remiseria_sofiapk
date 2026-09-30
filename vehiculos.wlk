@@ -90,3 +90,37 @@ object tanqueExtraDeGas {
   method esRuidoso() = false
   method autonomía() = 200
 }
+
+object combiAdaptable {
+  var property color = "celeste"
+  var property interior = interiorAccesible
+  var property motor = motorUrbano
+
+  method capacidad() = interior.capacidad()
+  method puedeTransportarSillasDeRuedas() = interior.puedeTransportarSillasDeRuedas()
+  method velocidadMáx() = motor.velocidadMáx()
+  method autonomía() = motor.autonomía()
+  method esRuidoso() = motor.esRuidoso()
+}
+
+object interiorEspacioso {
+  method capacidad() = 7
+  method puedeTransportarSillasDeRuedas() = false
+}
+
+object interiorAccesible {
+  method capacidad() = 5
+  method puedeTransportarSillasDeRuedas() = true
+}
+
+object motorDeportivo {
+  method velocidadMáx() = 230
+  method autonomía() = 400
+  method esRuidoso() = true
+}
+
+object motorUrbano {
+  method velocidadMáx() = 130
+  method autonomía() = 1000
+  method esRuidoso() = false
+}
