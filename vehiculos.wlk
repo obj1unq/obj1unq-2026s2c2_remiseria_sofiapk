@@ -6,6 +6,7 @@
   Colecciones https://docs.google.com/document/d/1OJbaQIwIf1r23JbEzxqBJ5NgYW0lodbz2_MzbaGgNuk/edit?tab=t.0#heading=h.r2zj8m016hq
 */
 
+// 1. VEHICULOS
 class Torino {
   var color
   var velocidadMáx 
@@ -124,3 +125,55 @@ object motorUrbano {
   method autonomía() = 1000
   method esRuidoso() = false
 }
+
+// 2. RESERVAS
+class Reserva {
+  var property cantPersonasALlevar // para capacidad de reserva
+  var property distanciaARecorrer
+  var property tiempoMáxViaje // tiempo máximo de viaje en horas
+  const kmPorHora = 10
+  var property coloresContraindicados = #{} // colores que estan contraindicados para alguna de las personas que viajan
+  var property necesitaVehículoSilencioso
+  var property necesitaTrasportarSillasDeRuedas
+
+  method solicitudPuedeSerCumplidaPor(unVehículo) {
+    return self.cumpleConLaCapacididad(unVehículo) &&
+           self.cumpleConLaAutonomía(unVehículo) &&
+           self.cumpleConLaVelocidadMáx(unVehículo) &&
+           self.esRespetuoso(unVehículo)
+  }
+
+  method cumpleConLaCapacididad(unVehículo) {
+    return unVehículo.capacidad() >= cantPersonasALlevar
+  }
+
+  method cumpleConLaAutonomía(unVehículo) {
+    return unVehículo.autonomía() >= distanciaARecorrer
+  }
+
+  method cumpleConLaVelocidadMáx(unVehículo) {
+    return unVehículo.velocidadMáx() >= ( self.velocidadPromedioQueNecesita() + kmPorHora )
+  }
+
+  method velocidadPromedioQueNecesita() {
+    return  distanciaARecorrer / tiempoMáxViaje
+  }
+
+  method esRespetuoso(unVehículo){ // cumple con las necesidades de los pasajeros
+    return self.respetaColor(unVehículo) && self.respetaUsoDeSillasDeRuedas(unVehículo) && self.respetaSensibilidadAuditiva(unVehículo)
+  }
+
+  method respetaColor(unVehículo) { 
+    return not coloresContraindicados.contains( unVehículo.color() )
+  }
+
+  method respetaUsoDeSillasDeRuedas(unVehículo) {
+    return unVehículo.puedeTransportarSillasDeRuedas() || not necesitaTrasportarSillasDeRuedas
+  }
+
+  method respetaSensibilidadAuditiva(unVehículo) {
+    return not unVehículo.esRuidoso() || not necesitaVehículoSilencioso
+  }
+}
+
+// 3. SUCURSALES Y VIAJES

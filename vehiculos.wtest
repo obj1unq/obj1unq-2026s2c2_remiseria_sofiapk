@@ -62,4 +62,44 @@ describe "Tests de Remisería ChasquiCoop" {
     assert.notThat( combiAdaptable.puedeTransportarSillasDeRuedas() )
     assert.that( combiAdaptable.esRuidoso() )
   }
+
+  test "reserva exigente cumplida sin inconvenientes" {
+    const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 480, tiempoMáxViaje = 4, coloresContraindicados = #{"rojo", "verdeFlúor"}, necesitaVehículoSilencioso = true, necesitaTrasportarSillasDeRuedas = true)
+    
+    combiAdaptable.interior(interiorAccesible)
+    combiAdaptable.motor(motorUrbano)
+
+    assert.that( reserva.solicitudPuedeSerCumplidaPor(combiAdaptable) )
+  }
+
+  test "reserva que falla por capacidad insuficiente" {
+    const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 200, tiempoMáxViaje = 2, coloresContraindicados = #{}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
+
+    assert.notThat( reserva.solicitudPuedeSerCumplidaPor(reyDeCopas) )
+  }
+
+  test "reserva que falla por autonomía insuficiente" {
+    const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 195, tiempoMáxViaje = 2, coloresContraindicados = #{}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
+    assert.notThat( reserva.solicitudPuedeSerCumplidaPor(xeneixe) )
+  }
+
+  test "reserva que falla por velocidad insuficiente" {
+    const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 200, tiempoMáxViaje = 1, coloresContraindicados = #{}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
+    assert.notThat( reserva.solicitudPuedeSerCumplidaPor(millonario) )
+  }
+
+  test "reserva que falla por color contraindicado" {
+    const reserva = new Reserva( cantPersonasALlevar = 4, distanciaARecorrer = 150, tiempoMáxViaje = 1.5, coloresContraindicados = #{"rojo"}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
+    assert.notThat( reserva.solicitudPuedeSerCumplidaPor(reyDeCopas) )
+  }
+
+  test "reserva que falla por necesitar transportar silla de ruedas" {
+    const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 150, tiempoMáxViaje = 1.5, coloresContraindicados = #{}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = true )
+    assert.notThat( reserva.solicitudPuedeSerCumplidaPor(millonario) )
+  }
+
+  test "reserva que falla por necesitar un vehículo silencioso" {
+    const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 150, tiempoMáxViaje = 1.5, coloresContraindicados = #{}, necesitaVehículoSilencioso = true, necesitaTrasportarSillasDeRuedas = false )
+    assert.notThat( reserva.solicitudPuedeSerCumplidaPor(millonario) )
+  }
 }
