@@ -102,4 +102,39 @@ describe "Tests de Remisería ChasquiCoop" {
     const reserva = new Reserva( cantPersonasALlevar = 5, distanciaARecorrer = 150, tiempoMáxViaje = 1.5, coloresContraindicados = #{}, necesitaVehículoSilencioso = true, necesitaTrasportarSillasDeRuedas = false )
     assert.notThat( reserva.solicitudPuedeSerCumplidaPor(millonario) )
   }
+
+  test "reservas y viajes" {
+    combiAdaptable.interior(interiorAccesible)
+    combiAdaptable.motor(motorUrbano)
+
+    const villaElisa = new Sucursal()
+    villaElisa.agregarALaFlota(combiAdaptable)
+    villaElisa.agregarALaFlota(academia)
+    villaElisa.agregarALaFlota(reyDeCopas)
+    assert.that( villaElisa.flota().contains(combiAdaptable) )
+    assert.that( villaElisa.flota().contains(academia) )
+    assert.that( villaElisa.flota().contains(reyDeCopas) )
+
+    const unq = new Reserva( cantPersonasALlevar = 4, distanciaARecorrer = 30, tiempoMáxViaje = 4, coloresContraindicados = #{"rojo"}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
+
+    assert.equals( #{ combiAdaptable, academia } , villaElisa.cumpleCon(unq) ) // reyDeCopas queda descartado por ser de color rojo
+
+    assert.throwsException( { villaElisa.registrarViaje( unq, reyDeCopas ) } ) // falla porque no respeta la reserva  - tiene color contraindicado
+
+    assert.throwsException( { villaElisa.registrarViaje( unq, xeneixe ) } ) // falla porque no es parte de la flota de villaElisa
+
+    villaElisa.registrarViaje( unq, combiAdaptable )
+
+    const utn = new Reserva( cantPersonasALlevar = 4, distanciaARecorrer = 60, tiempoMáxViaje = 4, coloresContraindicados = #{}, necesitaVehículoSilencioso = true, necesitaTrasportarSillasDeRuedas = true )
+    villaElisa.registrarViaje( utn, combiAdaptable )
+
+    const unsam = new Reserva( cantPersonasALlevar = 4, distanciaARecorrer = 70, tiempoMáxViaje = 4, coloresContraindicados = #{"rojo"}, necesitaVehículoSilencioso = false, necesitaTrasportarSillasDeRuedas = false )
+    villaElisa.registrarViaje( unsam, academia)
+
+    assert.equals( #{ unq, utn } , villaElisa.reservasDeVehículo(combiAdaptable) )
+    assert.equals( 90, villaElisa.distanciaTotalRecorridaPorVehículo(combiAdaptable) )
+
+    assert.equals( #{ unsam } , villaElisa.reservasDeVehículo(academia) )
+    assert.equals( 70, villaElisa.distanciaTotalRecorridaPorVehículo(academia) )
+  } 
 }

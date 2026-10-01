@@ -72,7 +72,7 @@ object trasportadorDeSillaRuedas {
   method cantEspacioQueOcupa() = 1
   method velocidadMáx() = 90
   method puedeTransportarSillasDeRuedas() = true
-  method esRuidoso() = true // ? porque no influye, o queda vacio
+  method esRuidoso() = true
   method autonomía() = -20
 }
 
@@ -177,3 +177,55 @@ class Reserva {
 }
 
 // 3. SUCURSALES Y VIAJES
+class Sucursal {
+  var property historial = #{}
+  var property flota = #{}
+
+  method agregarALaFlota(vehículo) = flota.add(vehículo) 
+
+  method quitarDeLaFlota(vehículo) = flota.remove(vehículo) 
+
+  method cumpleCon(reserva) { // paso 2: me dice que vehiculos de la flota cumplen con la reserva
+    return flota.filter( { vehículo => reserva.solicitudPuedeSerCumplidaPor(vehículo) } )
+  }
+
+  method registrarViaje(reserva, vehículo) {
+    self.validarVehículo(vehículo) // el vehiculo tiene que ser parte de la flota
+    self.validarCumplimientoDeReserva(reserva, vehículo) // el vehículo tiene que ser capaz de cumplir con la reserva indicada
+    self.agregarViajeAlHistorial(reserva, vehículo)
+  }
+
+  method validarVehículo(vehículo){
+    if ( not flota.contains(vehículo) ){
+      self.error( "El vehículo no pertenece a nuestra flota" )
+    }
+  }
+
+  method validarCumplimientoDeReserva(reserva, vehículo) {
+    if ( not reserva.solicitudPuedeSerCumplidaPor(vehículo) ){
+      self.error( "El vehículo no cumple con la reserva" )
+    }
+  }
+
+  method agregarViajeAlHistorial(reserva, vehículo) {
+    const nuevoViaje = new Viaje ( reserva = reserva, vehículo = vehículo )
+    historial.add( nuevoViaje ) 
+  }
+
+  method reservasDeVehículo(vehículo) { // saber todas las reservas que dicho vehículo resolvió (es decir, las reservas de todos los viajes en los que participó ese vehículo)
+    return self.viajesEnLasQueParticipó(vehículo).map( { viaje => viaje.reserva() } ).asSet()
+  }
+
+  method viajesEnLasQueParticipó(vehículo) {
+    return historial.filter( { viaje => viaje.vehículo() == vehículo } )
+  }
+
+  method distanciaTotalRecorridaPorVehículo(vehículo) { // saber la distancia total recorrida por ese vehículo en los viajes de la sucursal
+    return self.reservasDeVehículo(vehículo).sum( { reserva => reserva.distanciaARecorrer() } )
+  }
+}
+
+class Viaje {
+  var property vehículo
+  var property reserva
+}
