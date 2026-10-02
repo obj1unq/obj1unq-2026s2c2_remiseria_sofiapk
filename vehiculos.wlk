@@ -1,0 +1,231 @@
+/*
+  APUNTES GUIA
+  Proceso de desarrollo https://docs.google.com/document/d/1NNqwCuLb-TxSs5-jgmcqox8MwPTtakTZHA8191vOuHU/edit?tab=t.0
+  Tests https://docs.google.com/document/d/1xtUAg9_XSLlGNilUADKrDuCFf_jYfgZcu-vrttNygZE/edit?tab=t.0#heading=h.8u2q0xt88h8h
+  Clases https://docs.google.com/document/d/1yjNMBBlgqv_F_Fs1X7lBS54r-bexeD933dKOvh4oiRA/edit?tab=t.0
+  Colecciones https://docs.google.com/document/d/1OJbaQIwIf1r23JbEzxqBJ5NgYW0lodbz2_MzbaGgNuk/edit?tab=t.0#heading=h.r2zj8m016hq
+*/
+
+// 1. VEHICULOS
+class Torino {
+  var color
+  var velocidadMáx 
+  var autonomía // distancia que puede recorrer sin cargar combustible
+
+  method color() = color
+
+  method velocidadMáx() = velocidadMáx
+
+  method autonomía() = autonomía
+
+  method capacidad() = 4 // cantidad de personas que puede transportar al mismo tiempo
+
+  method esRuidoso() = true
+
+  method puedeTransportarSillasDeRuedas() = false
+
+}
+
+class Económico {
+  var property adaptaciones = #{}
+  const capacidadBase = 5
+  const velocidadMáxBase = 120 
+  const autonomíaBase = 200 // distancia que puede recorrer sin cargar combustible
+
+  method agregarAdaptación(adaptación) = adaptaciones.add(adaptación)
+
+  method capacidad() = capacidadBase - self.capacidadDeAdaptaciones() // capacidad: cantidad de personas que puede transportar al mismo tiempo
+
+  method capacidadDeAdaptaciones(){
+    return adaptaciones.sum( { adaptación => adaptación.cantEspacioQueOcupa() } )
+  } // o adaptaciones.size() ?
+
+  method velocidadMáx() {
+    return self.velocidadMáxDeAdaptaciones().minIfEmpty({velocidadMáxBase})
+    //return ( self.velocidadMáxDeAdaptaciones() + velocidadMáxBase ).min()
+  }
+
+  method velocidadMáxDeAdaptaciones() {
+    return adaptaciones.map( { adaptación => adaptación.velocidadMáx() } )
+  }
+
+  method puedeTransportarSillasDeRuedas() { // any devuelve booleano
+    return adaptaciones.any( { adaptación => adaptación.puedeTransportarSillasDeRuedas() } )
+  }
+
+  method esRuidoso() {
+    return not adaptaciones.any( { adaptación => not adaptación.esRuidoso() } )
+  }
+
+  method color() = "beige"
+
+  method autonomía() {
+    return autonomíaBase + self.autonomíaDeAdaptaciones()
+  }
+
+  method autonomíaDeAdaptaciones() {
+    return adaptaciones.sum( { adaptación => adaptación.autonomía() } )
+  }
+}
+
+object trasportadorDeSillaRuedas {
+  method cantEspacioQueOcupa() = 1
+  method velocidadMáx() = 90
+  method puedeTransportarSillasDeRuedas() = true
+  method esRuidoso() = true
+  method autonomía() = -20
+}
+
+object cañoDeEscapeSilencioso {
+  method cantEspacioQueOcupa() = 0
+  method velocidadMáx() = 115
+  method puedeTransportarSillasDeRuedas() = false
+  method esRuidoso() = false
+  method autonomía() = -10
+}
+
+object tanqueExtraDeGas {
+  method cantEspacioQueOcupa() = 1
+  method velocidadMáx() = 80
+  method puedeTransportarSillasDeRuedas() = false
+  method esRuidoso() = false
+  method autonomía() = 200
+}
+
+object combiAdaptable {
+  var property color = "celeste"
+  var property interior = interiorAccesible
+  var property motor = motorUrbano
+
+  method capacidad() = interior.capacidad()
+  method puedeTransportarSillasDeRuedas() = interior.puedeTransportarSillasDeRuedas()
+  method velocidadMáx() = motor.velocidadMáx()
+  method autonomía() = motor.autonomía()
+  method esRuidoso() = motor.esRuidoso()
+}
+
+object interiorEspacioso {
+  method capacidad() = 7
+  method puedeTransportarSillasDeRuedas() = false
+}
+
+object interiorAccesible {
+  method capacidad() = 5
+  method puedeTransportarSillasDeRuedas() = true
+}
+
+object motorDeportivo {
+  method velocidadMáx() = 230
+  method autonomía() = 400
+  method esRuidoso() = true
+}
+
+object motorUrbano {
+  method velocidadMáx() = 130
+  method autonomía() = 1000
+  method esRuidoso() = false
+}
+
+// 2. RESERVAS
+class Reserva {
+  var property cantPersonasALlevar // para capacidad de reserva
+  var property distanciaARecorrer
+  var property tiempoMáxViaje // tiempo máximo de viaje en horas
+  const kmPorHora = 10
+  var property coloresContraindicados = #{} // colores que estan contraindicados para alguna de las personas que viajan
+  var property necesitaVehículoSilencioso
+  var property necesitaTrasportarSillasDeRuedas
+
+  method solicitudPuedeSerCumplidaPor(unVehículo) {
+    return self.cumpleConLaCapacididad(unVehículo) &&
+           self.cumpleConLaAutonomía(unVehículo) &&
+           self.cumpleConLaVelocidadMáx(unVehículo) &&
+           self.esRespetuoso(unVehículo)
+  }
+
+  method cumpleConLaCapacididad(unVehículo) {
+    return unVehículo.capacidad() >= cantPersonasALlevar
+  }
+
+  method cumpleConLaAutonomía(unVehículo) {
+    return unVehículo.autonomía() >= distanciaARecorrer
+  }
+
+  method cumpleConLaVelocidadMáx(unVehículo) {
+    return unVehículo.velocidadMáx() >= ( self.velocidadPromedioQueNecesita() + kmPorHora )
+  }
+
+  method velocidadPromedioQueNecesita() {
+    return  distanciaARecorrer / tiempoMáxViaje
+  }
+
+  method esRespetuoso(unVehículo){ // cumple con las necesidades de los pasajeros
+    return self.respetaColor(unVehículo) && self.respetaUsoDeSillasDeRuedas(unVehículo) && self.respetaSensibilidadAuditiva(unVehículo)
+  }
+
+  method respetaColor(unVehículo) { 
+    return not coloresContraindicados.contains( unVehículo.color() )
+  }
+
+  method respetaUsoDeSillasDeRuedas(unVehículo) {
+    return unVehículo.puedeTransportarSillasDeRuedas() || not self.necesitaTrasportarSillasDeRuedas()
+  }
+
+  method respetaSensibilidadAuditiva(unVehículo) {
+    return not unVehículo.esRuidoso() || not self.necesitaVehículoSilencioso()
+  }
+}
+
+// 3. SUCURSALES Y VIAJES
+class Sucursal {
+  var property historial = #{}
+  var property flota = #{}
+
+  method agregarALaFlota(vehículo) = flota.add(vehículo) 
+
+  method quitarDeLaFlota(vehículo) = flota.remove(vehículo) 
+
+  method cumpleCon(reserva) { // paso 2: me dice que vehiculos de la flota cumplen con la reserva
+    return flota.filter( { vehículo => reserva.solicitudPuedeSerCumplidaPor(vehículo) } )
+  }
+
+  method registrarViaje(reserva, vehículo) {
+    self.validarVehículo(vehículo) // el vehiculo tiene que ser parte de la flota
+    self.validarCumplimientoDeReserva(reserva, vehículo) // el vehículo tiene que ser capaz de cumplir con la reserva indicada
+    self.agregarViajeAlHistorial(reserva, vehículo)
+  }
+
+  method validarVehículo(vehículo){
+    if ( not flota.contains(vehículo) ){
+      self.error( "El vehículo no pertenece a nuestra flota" )
+    }
+  }
+
+  method validarCumplimientoDeReserva(reserva, vehículo) {
+    if ( not reserva.solicitudPuedeSerCumplidaPor(vehículo) ){
+      self.error( "El vehículo no cumple con la reserva" )
+    }
+  }
+
+  method agregarViajeAlHistorial(reserva, vehículo) {
+    const nuevoViaje = new Viaje ( reserva = reserva, vehículo = vehículo )
+    historial.add( nuevoViaje ) 
+  }
+
+  method reservasDeVehículo(vehículo) { // saber todas las reservas que dicho vehículo resolvió (es decir, las reservas de todos los viajes en los que participó ese vehículo)
+    return self.viajesEnLasQueParticipó(vehículo).map( { viaje => viaje.reserva() } ).asSet()
+  }
+
+  method viajesEnLasQueParticipó(vehículo) {
+    return historial.filter( { viaje => viaje.vehículo() == vehículo } )
+  }
+
+  method distanciaTotalRecorridaPorVehículo(vehículo) { // saber la distancia total recorrida por ese vehículo en los viajes de la sucursal
+    return self.reservasDeVehículo(vehículo).sum( { reserva => reserva.distanciaARecorrer() } )
+  }
+}
+
+class Viaje {
+  var property vehículo
+  var property reserva
+}
