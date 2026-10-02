@@ -80,6 +80,7 @@ Considerar los siguientes vehículos. Se utilizan nombres de fantasía porque de
     - la capacidad es 4
     - No puede llevar sillas de ruedas
     - Es ruidoso
+
 #### Económico: cuervo
   Probar que para cuervo:
     - El color es beige
@@ -88,6 +89,7 @@ Considerar los siguientes vehículos. Se utilizan nombres de fantasía porque de
     - la capacidad es 3
     - Puede llevar sillas de ruedas
     - No es ruidoso
+
 #### Económico: xeneise
   Probar que para xeneise:
     - El color es beige
@@ -96,6 +98,7 @@ Considerar los siguientes vehículos. Se utilizan nombres de fantasía porque de
     - la capacidad es 5
     - No puede llevar sillas de ruedas
     - No es ruidoso
+
 #### Económico: millonario
   Probar que para millonario:
     - El color es beige
@@ -104,7 +107,7 @@ Considerar los siguientes vehículos. Se utilizan nombres de fantasía porque de
     - la capacidad es 5
     - No puede llevar sillas de ruedas
     - Es ruidoso
-  
+
 #### combi: motor urbano e interior accesible
   Probar que para la combi con motor urbano e interior accesible:
     - El color es celeste

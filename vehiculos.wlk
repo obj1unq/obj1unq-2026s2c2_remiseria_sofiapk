@@ -168,11 +168,11 @@ class Reserva {
   }
 
   method respetaUsoDeSillasDeRuedas(unVehículo) {
-    return unVehículo.puedeTransportarSillasDeRuedas() || not necesitaTrasportarSillasDeRuedas
+    return unVehículo.puedeTransportarSillasDeRuedas() || not self.necesitaTrasportarSillasDeRuedas()
   }
 
   method respetaSensibilidadAuditiva(unVehículo) {
-    return not unVehículo.esRuidoso() || not necesitaVehículoSilencioso
+    return not unVehículo.esRuidoso() || not self.necesitaVehículoSilencioso()
   }
 }
 

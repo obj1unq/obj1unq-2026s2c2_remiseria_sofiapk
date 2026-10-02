@@ -1,6 +1,6 @@
 import vehiculos.*
 
-describe "Tests de Remisería ChasquiCoop" {
+describe "Tests de remisería ChasquiCoop" {
   const reyDeCopas = new Torino( color = "rojo", velocidadMáx = 120, autonomía = 300 )
   const academia = new Torino(  color = "celeste", velocidadMáx = 110, autonomía = 250  )
   const cuervo = new Económico( adaptaciones = #{ tanqueExtraDeGas, trasportadorDeSillaRuedas } )

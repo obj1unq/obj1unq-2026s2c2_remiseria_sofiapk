@@ -1,4 +1,4 @@
-4. Para reflexionar:
+4. Ejercicio de reflexión:
 ¿Da igual que las colecciones de flotas y viajes en la sucursal sean listas o conjuntos? 
     En la colección de flota no da igual porque el vehículo no puede repetirse. 
     En la colección de historial de viaje puede ser una lista (aunque lo hice set).
