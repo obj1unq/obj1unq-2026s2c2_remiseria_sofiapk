@@ -1,0 +1,15 @@
+4. Ejercicio de reflexión:
+¿Da igual que las colecciones de flotas y viajes en la sucursal sean listas o conjuntos? 
+    En la colección de flota no da igual porque el vehículo no puede repetirse. 
+    En la colección de historial de viaje puede ser una lista (aunque lo hice set) ya que el nombre "historial" puede denotar que requiere un orden.
+
+¿Dónde se instancia un viaje, dentro o fuera de la clase Sucursal? Pensar como sería la alternativa.
+    En mi solución lo hice dentro del método agregarViajeAlHistorial(reserva, vehículo).
+
+    Alternativa: se instacia desde afuera. 
+    const unViaje = new Viaje( vehiculo = ..., reserva = ... )
+    villaElisa.registrarViaje(unViaje) 
+
+¿La combi es un objeto autodefinido o una instancia de clase? ¿Se puede usar la otra variante indistintamente?
+    Hice la combi como un WKO porque es una sola para todala empresa, pero si hubiese más de una podría ser definirse como una clase.
+    La combi no puede ser una clase, solo en la situacion en la cual tenga mas de un viaje al mismo tiempo y requiera que el vehiculo de esos viajes sea una combi.
